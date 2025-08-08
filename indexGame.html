@@ -266,21 +266,31 @@
             const naveWidth = nave.clientWidth;
             const naveHeight = nave.clientHeight;
 
-            let top = parseInt(getComputedStyle(nave).top);
-            let left = parseInt(getComputedStyle(nave).left);
+            // Obter top e left atuais em pixels, inicializar no centro se undefined
+            let top = parseFloat(nave.style.top);
+            let left = parseFloat(nave.style.left);
+
+            if (isNaN(top)) top = cenarioHeight / 2;
+            if (isNaN(left)) left = cenarioWidth / 2;
 
             let movendo = false;
 
-            if (teclasPressionadas.ArrowUp && top > 0) {
-                nave.style.top = (top - velocidade) + 'px';
+            // Limites considerando o transform translate(-50%, -50%)
+            const limiteSuperior = naveHeight / 2;
+            const limiteInferior = cenarioHeight - naveHeight / 2;
+            const limiteEsquerdo = naveWidth / 2;
+            const limiteDireito = cenarioWidth - naveWidth / 2;
+
+            if (teclasPressionadas.ArrowUp && top > limiteSuperior) {
+                top -= velocidade;
                 movendo = true;
             }
-            if (teclasPressionadas.ArrowDown && top < cenarioHeight - naveHeight) {
-                nave.style.top = (top + velocidade) + 'px';
+            if (teclasPressionadas.ArrowDown && top < limiteInferior) {
+                top += velocidade;
                 movendo = true;
             }
-            if (teclasPressionadas.ArrowLeft && left > 0) {
-                nave.style.left = (left - velocidade) + 'px';
+            if (teclasPressionadas.ArrowLeft && left > limiteEsquerdo) {
+                left -= velocidade;
                 movendo = true;
                 if (direcaoAtual !== 'esquerda') {
                     nave.style.transform = 'translate(-50%, -50%) scaleX(-1)';
@@ -288,8 +298,8 @@
                     direcaoAtual = 'esquerda';
                 }
             }
-            if (teclasPressionadas.ArrowRight && left < cenarioWidth - naveWidth) {
-                nave.style.left = (left + velocidade) + 'px';
+            if (teclasPressionadas.ArrowRight && left < limiteDireito) {
+                left += velocidade;
                 movendo = true;
                 if (direcaoAtual !== 'direita') {
                     nave.style.transform = 'translate(-50%, -50%) scaleX(1)';
@@ -297,6 +307,9 @@
                     direcaoAtual = 'direita';
                 }
             }
+
+            nave.style.top = top + 'px';
+            nave.style.left = left + 'px';
 
             chama.style.top = nave.style.top;
             chama.style.left = nave.style.left;
