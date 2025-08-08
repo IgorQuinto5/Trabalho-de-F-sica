@@ -282,7 +282,7 @@
         let posFundo = 0;
         function animarParallax() {
             if (jogoAcabou) return;
-            posFundo -= 0.5;
+            posFundo -= 0.1;
             cenario.style.backgroundPosition = `${posFundo}px 0`;
             requestAnimationFrame(animarParallax);
         }
