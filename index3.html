@@ -27,9 +27,9 @@
         }
 
         #botao-proximo,
-        #botao-voltar {
+        #botao-voltar,
+        #botao-skip {
             position: absolute;
-            bottom: 20px;
             padding: 10px 20px;
             font-size: 16px;
             background-color: rgba(0, 0, 0, 0.7);
@@ -37,18 +37,27 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         #botao-proximo {
             right: 20px;
+            bottom: 20px;
         }
 
         #botao-voltar {
             left: 20px;
+            bottom: 20px;
+        }
+
+        #botao-skip {
+            top: 20px;
+            right: 20px;
         }
 
         #botao-proximo:hover,
-        #botao-voltar:hover {
+        #botao-voltar:hover,
+        #botao-skip:hover {
             background-color: rgba(0, 0, 0, 0.9);
         }
     </style>
@@ -58,11 +67,13 @@
 
     <button id="botao-voltar">Voltar</button>
     <button id="botao-proximo">Próximo</button>
+    <button id="botao-skip">Skip</button>
 
     <script>
         let estado = 0;
         const botaoProximo = document.getElementById('botao-proximo');
         const botaoVoltar = document.getElementById('botao-voltar');
+        const botaoSkip = document.getElementById('botao-skip');
 
         botaoProximo.addEventListener('click', () => {
             if (estado === 0) {
@@ -80,6 +91,10 @@
                 document.body.style.backgroundImage = "url('ChatGPT Image 8 de ago. de 2025, 02_17_00.png')";
                 estado = 0;
             }
+        });
+
+        botaoSkip.addEventListener('click', () => {
+            window.location.href = 'index4.html';
         });
     </script>
 
