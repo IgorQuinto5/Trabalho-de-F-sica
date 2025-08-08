@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Página Inicial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body,
+        html {
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        .background {
+            background-image: url('rede-in.jpg');
+            /* Troque pela URL da sua imagem */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 20px;
+            color: white;
+            background-color: rgba(0, 123, 255, 0.8);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: rgba(0, 123, 255, 1);
+            transform: scale(1.1);
+            /* Aumenta o botão em 10% */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background">
+        <button class="btn"  onclick="window.location.href='index2.html'">Começar a aprender</button>
+    </div>
+</body>
+
+</html>

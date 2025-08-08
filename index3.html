@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Página Inicial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            font-family: sans-serif;
+        }
+
+        body {
+            background-image: url('ChatGPT Image 8 de ago. de 2025, 02_17_00.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        #botao-proximo,
+        #botao-voltar {
+            position: absolute;
+            bottom: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #botao-proximo {
+            right: 20px;
+        }
+
+        #botao-voltar {
+            left: 20px;
+        }
+
+        #botao-proximo:hover,
+        #botao-voltar:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+    </style>
+</head>
+
+<body>
+
+    <button id="botao-voltar">Voltar</button>
+    <button id="botao-proximo">Próximo</button>
+
+    <script>
+        let estado = 0;
+        const botaoProximo = document.getElementById('botao-proximo');
+        const botaoVoltar = document.getElementById('botao-voltar');
+
+        botaoProximo.addEventListener('click', () => {
+            if (estado === 0) {
+                document.body.style.backgroundImage = "url('ChatGPT Image 8 de ago. de 2025, 02_23_56.png')";
+                estado = 1;
+            } else if (estado === 1) {
+                window.location.href = 'index4.html';
+            }
+        });
+
+        botaoVoltar.addEventListener('click', () => {
+            if (estado === 0) {
+                window.location.href = 'indexGame.html';
+            } else if (estado === 1) {
+                document.body.style.backgroundImage = "url('ChatGPT Image 8 de ago. de 2025, 02_17_00.png')";
+                estado = 0;
+            }
+        });
+    </script>
+
+</body>
+
+</html>

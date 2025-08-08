@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Batalha Espacial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            overflow: hidden;
+        }
+
+        #cenario {
+            background-image: url('starry-space-vector-background-pixel-art-pixel-space-8-bit-700-236638267.jpg');
+            background-size: cover;
+            background-repeat: repeat-x;
+            background-position: 0 0;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        #nave {
+            width: 60px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s;
+            z-index: 2;
+        }
+
+        #chama {
+            width: 30px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-70%, -50%);
+            display: none;
+            z-index: 1;
+        }
+
+        .meteoro {
+            width: 50px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 1;
+        }
+
+        #timer {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 10px 20px;
+            border-radius: 10px;
+            z-index: 10;
+        }
+
+        #vidas {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .vida {
+            width: 40px;
+        }
+
+        .invencivel {
+            opacity: 0.5;
+        }
+
+        #fimJogo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(50, 50, 50, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 100;
+            display: none;
+        }
+
+        #fimJogo button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #ffffff;
+            color: #333;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #fimJogo button:hover {
+            background-color: #ccc;
+        }
+
+        #fimJogo h1 {
+            color: white;
+            font-size: 36px;
+        }
+
+        /* Tela inicial */
+        #telaInicio {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 200;
+            user-select: none;
+        }
+
+        #telaInicio button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 22px;
+            background-color: #ffffff;
+            color: #2c2b2b;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #telaInicio button:hover {
+            background-color: #ccc;
+            transform: scale(1.02);
+        }
+
+        #telaInicio h1 {
+            color: white;
+            font-size: 42px;
+            text-align: center;
+            max-width: 80%;
+        }
+
+        /* Botões de navegação */
+        .botao-topo {
+            position: absolute;
+            top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: rgb(255, 255, 255);
+            color: rgb(0, 0, 0);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 300;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .botao-topo:hover {
+            background-color: rgba(203, 194, 194, 0.9);
+            transform: scale(1.02);
+        }
+
+        #btnVoltar {
+            left: 20px;
+        }
+
+        #btnAvancar {
+            right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cenario">
+        <!-- Botões de navegação -->
+        <button id="btnVoltar" class="botao-topo" onclick="window.location.href='index2.html'">Voltar</button>
+        <button id="btnAvancar" class="botao-topo" onclick="window.location.href='index3.html'">Avançar</button>
+
+        <img id="chama" src="output-onlinegiftools (12).gif" alt="Chama do Foguete">
+        <img id="nave" src="nave-removebg-preview.png" alt="Nave Espacial">
+        <div id="timer">Tempo: 45s</div>
+        <div id="vidas">
+            <img src="game-heart-pixelated-free-png.webp" class="vida">
+            <img src="game-heart-pixelated-free-png.webp" class="vida">
+            <img src="game-heart-pixelated-free-png.webp" class="vida">
+        </div>
+
+        <!-- Tela de fim de jogo -->
+        <div id="fimJogo">
+            <h1>Você perdeu!</h1>
+            <button onclick="location.reload()">Tentar novamente</button>
+        </div>
+
+        <!-- Tela inicial -->
+        <div id="telaInicio">
+            <h1>Viagem para os Portais de Aprendizado</h1>
+            <button id="btnComecar">Começar viagem</button>
+        </div>
+    </div>
+
+    <script>
+        const nave = document.getElementById('nave');
+        const chama = document.getElementById('chama');
+        const cenario = document.getElementById('cenario');
+        const timer = document.getElementById('timer');
+        const vidasDiv = document.getElementById('vidas');
+        const fimJogoDiv = document.getElementById('fimJogo');
+        const telaInicio = document.getElementById('telaInicio');
+        const btnComecar = document.getElementById('btnComecar');
+
+        let vidas = 3;
+        const velocidade = 4;
+        let direcaoAtual = 'direita';
+        let invencivel = false;
+        let jogoAcabou = false;
+        let jogoIniciado = false;
+
+        const teclasPressionadas = {
+            ArrowUp: false,
+            ArrowDown: false,
+            ArrowLeft: false,
+            ArrowRight: false
+        };
+
+        btnComecar.addEventListener('click', () => {
+            telaInicio.style.display = 'none';
+            iniciarJogo();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (jogoIniciado && e.key in teclasPressionadas) {
+                teclasPressionadas[e.key] = true;
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (jogoIniciado && e.key in teclasPressionadas) {
+                teclasPressionadas[e.key] = false;
+            }
+        });
+
+        function moverNave() {
+            if (jogoAcabou || !jogoIniciado) return;
+
+            const cenarioWidth = cenario.clientWidth;
+            const cenarioHeight = cenario.clientHeight;
+            const naveWidth = nave.clientWidth;
+            const naveHeight = nave.clientHeight;
+
+            let top = parseInt(getComputedStyle(nave).top);
+            let left = parseInt(getComputedStyle(nave).left);
+
+            let movendo = false;
+
+            if (teclasPressionadas.ArrowUp && top > 0) {
+                nave.style.top = (top - velocidade) + 'px';
+                movendo = true;
+            }
+            if (teclasPressionadas.ArrowDown && top < cenarioHeight - naveHeight) {
+                nave.style.top = (top + velocidade) + 'px';
+                movendo = true;
+            }
+            if (teclasPressionadas.ArrowLeft && left > 0) {
+                nave.style.left = (left - velocidade) + 'px';
+                movendo = true;
+                if (direcaoAtual !== 'esquerda') {
+                    nave.style.transform = 'translate(-50%, -50%) scaleX(-1)';
+                    chama.style.transform = 'translate(70%, -40%) scaleX(1)';
+                    direcaoAtual = 'esquerda';
+                }
+            }
+            if (teclasPressionadas.ArrowRight && left < cenarioWidth - naveWidth) {
+                nave.style.left = (left + velocidade) + 'px';
+                movendo = true;
+                if (direcaoAtual !== 'direita') {
+                    nave.style.transform = 'translate(-50%, -50%) scaleX(1)';
+                    chama.style.transform = 'translate(-175%, -40%) scaleX(-1)';
+                    direcaoAtual = 'direita';
+                }
+            }
+
+            chama.style.top = nave.style.top;
+            chama.style.left = nave.style.left;
+            chama.style.display = movendo ? 'block' : 'none';
+
+            requestAnimationFrame(moverNave);
+        }
+
+        function animarParallax() {
+            if (jogoAcabou || !jogoIniciado) return;
+
+            posFundo -= 0.5;
+            cenario.style.backgroundPosition = `${posFundo}px 0`;
+            requestAnimationFrame(animarParallax);
+        }
+
+        function detectarColisao(elem1, elem2) {
+            const r1 = elem1.getBoundingClientRect();
+            const r2 = elem2.getBoundingClientRect();
+
+            return !(r2.left > r1.right ||
+                r2.right < r1.left ||
+                r2.top > r1.bottom ||
+                r2.bottom < r1.top);
+        }
+
+        function criarMeteoro() {
+            if (jogoAcabou || !jogoIniciado) return;
+
+            const meteoro = document.createElement('img');
+            meteoro.src = '8fpmswc0avmb1.gif';
+            meteoro.classList.add('meteoro');
+
+            meteoro.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+            meteoro.style.right = '-60px';
+            cenario.appendChild(meteoro);
+
+            let posRight = -60;
+            const velocidadeMeteoro = 2 + Math.random() * 3;
+
+            function moverMeteoro() {
+                if (jogoAcabou) return;
+                posRight += velocidadeMeteoro;
+                meteoro.style.right = posRight + 'px';
+
+                if (!invencivel && detectarColisao(nave, meteoro)) {
+                    meteoro.remove();
+                    perderVida();
+                    return;
+                }
+
+                if (posRight > window.innerWidth + 60) {
+                    meteoro.remove();
+                } else {
+                    requestAnimationFrame(moverMeteoro);
+                }
+            }
+
+            moverMeteoro();
+        }
+
+        function perderVida() {
+            if (vidas > 0 && !invencivel) {
+                vidas--;
+                const vidaImgs = document.querySelectorAll('.vida');
+                if (vidaImgs[vidas]) {
+                    vidaImgs[vidas].remove();
+                }
+
+                invencivel = true;
+                nave.classList.add('invencivel');
+
+                setTimeout(() => {
+                    invencivel = false;
+                    nave.classList.remove('invencivel');
+                }, 2000);
+
+                if (vidas === 0) {
+                    encerrarJogo();
+                }
+            }
+        }
+
+        function encerrarJogo() {
+            jogoAcabou = true;
+            fimJogoDiv.style.display = 'flex';
+        }
+
+        let posFundo = 0;
+        let tempo = 45;
+        let cronometro;
+        let intervaloMeteoro;
+
+        function iniciarJogo() {
+            jogoIniciado = true;
+            moverNave();
+            animarParallax();
+
+            cronometro = setInterval(() => {
+                if (jogoAcabou) return;
+
+                timer.innerText = `Tempo: ${tempo}s`;
+                tempo--;
+
+                if (tempo < 0) {
+                    clearInterval(cronometro);
+                    clearInterval(intervaloMeteoro);
+                    window.location.href = 'index3.html';
+                }
+            }, 1000);
+
+            intervaloMeteoro = setInterval(() => {
+                if (!jogoAcabou) {
+                    criarMeteoro();
+                }
+            }, 300);
+        }
+    </script>
+</body>
+
+</html>
