@@ -161,18 +161,27 @@
         let direcaoAtual = 'direita';
         let jogoAcabou = false;
 
+        // Agora com W,A,S,D também
         const teclasPressionadas = {
             ArrowUp: false,
             ArrowDown: false,
             ArrowLeft: false,
-            ArrowRight: false
+            ArrowRight: false,
+            w: false,
+            a: false,
+            s: false,
+            d: false
         };
 
         document.addEventListener('keydown', (e) => {
-            if (e.key in teclasPressionadas) {
+            const key = e.key.toLowerCase();
+            if (key === 'arrowup' || key === 'arrowdown' || key === 'arrowleft' || key === 'arrowright') {
                 teclasPressionadas[e.key] = true;
+            } else if (['w', 'a', 's', 'd'].includes(key)) {
+                teclasPressionadas[key] = true;
             }
-            if ((e.key === 'e' || e.key === 'E') && balão.style.display === 'block') {
+
+            if ((key === 'e') && balão.style.display === 'block') {
                 let portalAtual = null;
                 for (const portal of portais) {
                     if (colisao(nave, portal)) {
@@ -200,8 +209,11 @@
         });
 
         document.addEventListener('keyup', (e) => {
-            if (e.key in teclasPressionadas) {
+            const key = e.key.toLowerCase();
+            if (key === 'arrowup' || key === 'arrowdown' || key === 'arrowleft' || key === 'arrowright') {
                 teclasPressionadas[e.key] = false;
+            } else if (['w', 'a', 's', 'd'].includes(key)) {
+                teclasPressionadas[key] = false;
             }
         });
 
@@ -224,7 +236,6 @@
             const naveWidth = nave.clientWidth;
             const naveHeight = nave.clientHeight;
 
-            // Pega top e left atuais (em pixels), inicializa no centro se estiver vazio
             let top = parseFloat(nave.style.top);
             let left = parseFloat(nave.style.left);
 
@@ -233,21 +244,20 @@
 
             let movendo = false;
 
-            // Limites considerando transform: translate(-50%, -50%)
             const limiteSuperior = naveHeight / 2;
             const limiteInferior = cenarioHeight - naveHeight / 2;
             const limiteEsquerdo = naveWidth / 2;
             const limiteDireito = cenarioWidth - naveWidth / 2;
 
-            if (teclasPressionadas.ArrowUp && top > limiteSuperior) {
+            if ((teclasPressionadas.ArrowUp || teclasPressionadas.w) && top > limiteSuperior) {
                 top -= velocidade;
                 movendo = true;
             }
-            if (teclasPressionadas.ArrowDown && top < limiteInferior) {
+            if ((teclasPressionadas.ArrowDown || teclasPressionadas.s) && top < limiteInferior) {
                 top += velocidade;
                 movendo = true;
             }
-            if (teclasPressionadas.ArrowLeft && left > limiteEsquerdo) {
+            if ((teclasPressionadas.ArrowLeft || teclasPressionadas.a) && left > limiteEsquerdo) {
                 left -= velocidade;
                 movendo = true;
                 if (direcaoAtual !== 'esquerda') {
@@ -256,7 +266,7 @@
                     direcaoAtual = 'esquerda';
                 }
             }
-            if (teclasPressionadas.ArrowRight && left < limiteDireito) {
+            if ((teclasPressionadas.ArrowRight || teclasPressionadas.d) && left < limiteDireito) {
                 left += velocidade;
                 movendo = true;
                 if (direcaoAtual !== 'direita') {

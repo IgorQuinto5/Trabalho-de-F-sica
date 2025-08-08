@@ -238,7 +238,11 @@
             ArrowUp: false,
             ArrowDown: false,
             ArrowLeft: false,
-            ArrowRight: false
+            ArrowRight: false,
+            w: false,
+            a: false,
+            s: false,
+            d: false
         };
 
         btnComecar.addEventListener('click', () => {
@@ -247,14 +251,48 @@
         });
 
         document.addEventListener('keydown', (e) => {
-            if (jogoIniciado && e.key in teclasPressionadas) {
-                teclasPressionadas[e.key] = true;
+            if (!jogoIniciado) return;
+
+            const key = e.key;
+
+            if (
+                key === 'ArrowUp' ||
+                key === 'ArrowDown' ||
+                key === 'ArrowLeft' ||
+                key === 'ArrowRight' ||
+                key.toLowerCase() === 'w' ||
+                key.toLowerCase() === 'a' ||
+                key.toLowerCase() === 's' ||
+                key.toLowerCase() === 'd'
+            ) {
+                if (key.startsWith('Arrow')) {
+                    teclasPressionadas[key] = true;
+                } else {
+                    teclasPressionadas[key.toLowerCase()] = true;
+                }
             }
         });
 
         document.addEventListener('keyup', (e) => {
-            if (jogoIniciado && e.key in teclasPressionadas) {
-                teclasPressionadas[e.key] = false;
+            if (!jogoIniciado) return;
+
+            const key = e.key;
+
+            if (
+                key === 'ArrowUp' ||
+                key === 'ArrowDown' ||
+                key === 'ArrowLeft' ||
+                key === 'ArrowRight' ||
+                key.toLowerCase() === 'w' ||
+                key.toLowerCase() === 'a' ||
+                key.toLowerCase() === 's' ||
+                key.toLowerCase() === 'd'
+            ) {
+                if (key.startsWith('Arrow')) {
+                    teclasPressionadas[key] = false;
+                } else {
+                    teclasPressionadas[key.toLowerCase()] = false;
+                }
             }
         });
 
@@ -266,7 +304,6 @@
             const naveWidth = nave.clientWidth;
             const naveHeight = nave.clientHeight;
 
-            // Obter top e left atuais em pixels, inicializar no centro se undefined
             let top = parseFloat(nave.style.top);
             let left = parseFloat(nave.style.left);
 
@@ -275,21 +312,20 @@
 
             let movendo = false;
 
-            // Limites considerando o transform translate(-50%, -50%)
             const limiteSuperior = naveHeight / 2;
             const limiteInferior = cenarioHeight - naveHeight / 2;
             const limiteEsquerdo = naveWidth / 2;
             const limiteDireito = cenarioWidth - naveWidth / 2;
 
-            if (teclasPressionadas.ArrowUp && top > limiteSuperior) {
+            if ((teclasPressionadas.ArrowUp || teclasPressionadas.w) && top > limiteSuperior) {
                 top -= velocidade;
                 movendo = true;
             }
-            if (teclasPressionadas.ArrowDown && top < limiteInferior) {
+            if ((teclasPressionadas.ArrowDown || teclasPressionadas.s) && top < limiteInferior) {
                 top += velocidade;
                 movendo = true;
             }
-            if (teclasPressionadas.ArrowLeft && left > limiteEsquerdo) {
+            if ((teclasPressionadas.ArrowLeft || teclasPressionadas.a) && left > limiteEsquerdo) {
                 left -= velocidade;
                 movendo = true;
                 if (direcaoAtual !== 'esquerda') {
@@ -298,7 +334,7 @@
                     direcaoAtual = 'esquerda';
                 }
             }
-            if (teclasPressionadas.ArrowRight && left < limiteDireito) {
+            if ((teclasPressionadas.ArrowRight || teclasPressionadas.d) && left < limiteDireito) {
                 left += velocidade;
                 movendo = true;
                 if (direcaoAtual !== 'direita') {
