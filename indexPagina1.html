@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>NASA - Administração Nacional da Aeronáutica e Espaço</title>
     <style>
-        /* Reset básico */
         * {
             margin: 0;
             padding: 0;
@@ -84,7 +83,6 @@
             margin-top: 3rem;
         }
 
-        /* Botão para voltar ao topo */
         #btnTop {
             position: fixed;
             bottom: 30px;
@@ -106,7 +104,6 @@
             background: #66fcf1;
         }
 
-        /* Responsivo */
         @media (max-width: 600px) {
             nav ul {
                 flex-direction: column;
@@ -195,7 +192,6 @@
     <button id="btnTop" title="Voltar ao topo">&#8679;</button>
 
     <script>
-        // Menu mobile toggle
         const menuToggle = document.querySelector('.menu-toggle');
         const navUl = document.querySelector('nav ul');
 
@@ -203,7 +199,6 @@
             navUl.classList.toggle('show');
         });
 
-        // Botão voltar ao topo
         const btnTop = document.getElementById('btnTop');
 
         window.addEventListener('scroll', () => {
@@ -218,7 +213,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Fechar menu ao clicar em link (mobile)
         navUl.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 if (navUl.classList.contains('show')) {
